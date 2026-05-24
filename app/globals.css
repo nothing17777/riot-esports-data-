@@ -1,0 +1,158 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Light Mode (Default) */
+:root {
+  --background: #ffffff;
+  --surface: #f7f7f5;
+  --surface-raised: #f0efe9;
+  --border: #e5e3dc;
+  --foreground: #111111;
+  --foreground-secondary: #555550;
+  --foreground-muted: #999992;
+  --win: #16803c;
+  --loss: #c0392b;
+  --amber: #b45309;
+  --row-hover: #f5f0e8;
+  --accent: #2563eb;
+  --accent-cyan: #00c8ff;
+  --radius: 0.25rem;
+}
+
+/* Esports Mode (Dark) */
+.dark {
+  --background: #080c12;
+  --surface: #0d1520;
+  --surface-raised: #141f2e;
+  --border: #1a2535;
+  --foreground: #e8edf3;
+  --foreground-secondary: #8a9ab0;
+  --foreground-muted: #3a4a5c;
+  --win: #22c55e;
+  --loss: #ef4444;
+  --amber: #f59e0b;
+  --row-hover: #0f1a28;
+  --accent: #00c8ff;
+  --accent-cyan: #00c8ff;
+}
+
+@theme inline {
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-serif: var(--font-dm-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-win: var(--win);
+  --color-loss: var(--loss);
+  --color-amber: var(--amber);
+  --color-row-hover: var(--row-hover);
+  --color-accent: var(--accent);
+  --color-accent-cyan: var(--accent-cyan);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply bg-background;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+}
+
+/* Custom scrollbar for data tables */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
+
+/* Role icon filters */
+.role-icon-light {
+  filter: brightness(0);
+}
+
+.role-icon-dark {
+  filter: brightness(0) saturate(100%) invert(69%) sepia(98%) saturate(1000%) hue-rotate(166deg) brightness(104%) contrast(104%);
+}
+
+/* Score bar styling */
+.score-bar {
+  height: 3px;
+  background: var(--surface-raised);
+  border-radius: 1.5px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 1.5px;
+  transition: width 300ms ease;
+}
+
+/* Slide-in drawer animation */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.drawer-enter {
+  animation: slideInFromRight 300ms ease forwards;
+}
+
+/* Tab underline animation */
+.tab-underline {
+  position: relative;
+}
+
+.tab-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--foreground);
+  transform: scaleX(0);
+  transition: transform 200ms ease;
+}
+
+.dark .tab-underline::after {
+  background: var(--accent-cyan);
+}
+
+.tab-underline.active::after {
+  transform: scaleX(1);
+}
