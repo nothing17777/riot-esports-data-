@@ -15,6 +15,7 @@ const navLinks = [
   { href: '#win-rates', label: 'Win Rates' },
   { href: '#matches', label: 'Matches' },
   { href: '#players', label: 'Players' },
+  { href: '/db-status', label: 'DB Status' },
 ]
 
 interface NavbarProps {
