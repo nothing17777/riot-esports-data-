@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     // Test the connection by running a simple query
-    const result = await db.execute('SELECT datetime("now") as server_time');
+    const result = await db.execute("SELECT datetime('now') as server_time");
     
     // Get list of tables in the database
     const tablesResult = await db.execute(
