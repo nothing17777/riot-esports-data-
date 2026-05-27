@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import type { Champion, Player } from '@/lib/data'
-import { players } from '@/lib/data'
+import type { Champion } from '@/lib/data'
 import { Navbar } from '@/components/navbar'
 import { HeroSection } from '@/components/hero-section'
 import { PresenceSection } from '@/components/presence-section'
@@ -19,14 +18,7 @@ import { PlayerProfile } from '@/components/player-profile'
 export default function Home() {
   const [selectedLeague, setSelectedLeague] = useState('All Leagues')
   const [selectedChampion, setSelectedChampion] = useState<Champion | null>(null)
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null)
-
-  const handlePlayerClickById = useCallback((playerId: string) => {
-    const player = players.find(p => p.id === playerId)
-    if (player) {
-      setSelectedPlayer(player)
-    }
-  }, [])
+  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null)
 
   return (
     <main className="min-h-screen bg-background">
@@ -48,7 +40,7 @@ export default function Home() {
       <WinRatesSection onChampionClick={setSelectedChampion} />
       
       <MatchHistorySection 
-        onPlayerClick={handlePlayerClickById}
+        onPlayerClick={setSelectedPlayer}
         onChampionClick={setSelectedChampion}
       />
       
@@ -78,7 +70,7 @@ export default function Home() {
       <AnimatePresence>
         {selectedPlayer && (
           <PlayerProfile 
-            player={selectedPlayer} 
+            playerName={selectedPlayer} 
             onClose={() => setSelectedPlayer(null)} 
           />
         )}

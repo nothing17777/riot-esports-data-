@@ -130,7 +130,7 @@ export interface YearActivity {
   games: number
 }
 
-const DATADRAGON_BASE = 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion'
+const DATADRAGON_BASE = 'https://ddragon.leagueoflegends.com/cdn/16.10.1/img/champion'
 
 export const champions: Champion[] = [
   { id: '1', name: 'Azir', role: 'mid', imageUrl: `${DATADRAGON_BASE}/Azir.png`, presence: 89.2, winRate: 52.4, picks: 4521, bans: 3892 },

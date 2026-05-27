@@ -1,13 +1,19 @@
 import { NextResponse } from 'next/server';
-import { getChampionSynergy } from '@/lib/db-queries';
+import { getChampionSynergy, getChampionMultiSynergy } from '@/lib/db-queries';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const league = searchParams.get('league') || 'ALL';
     const limit = parseInt(searchParams.get('limit') || '20');
+    const size = parseInt(searchParams.get('size') || '2');
 
-    const data = await getChampionSynergy(league, limit);
+    let data;
+    if (size === 2) {
+      data = await getChampionSynergy(league, limit);
+    } else {
+      data = await getChampionMultiSynergy(league, limit, size);
+    }
     
     return NextResponse.json({ success: true, data });
   } catch (error: any) {

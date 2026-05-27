@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { X, Eye } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useCallback } from 'react'
@@ -52,7 +52,7 @@ function PlayerRow({
   const isBlue = side === 'blue'
   
   const kdaContent = (
-    <span className="font-mono text-sm whitespace-nowrap">
+    <span className="font-mono text-sm whitespace-nowrap w-24 text-center inline-block">
       <span className="text-win">{participant.kills}</span>
       <span className="text-foreground-muted"> / </span>
       <span className="text-loss">{participant.deaths}</span>
@@ -165,24 +165,26 @@ export function MatchDetailModal({ match, onClose, onPlayerClick, onChampionClic
   const mvp = [...winningTeam.players].sort((a, b) => b.kda - a.kda)[0]
 
   return (
-    <AnimatePresence>
+    <>
       {/* Backdrop */}
       <motion.div
+        key="match-detail-backdrop"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         onClick={onClose}
-        className="fixed inset-0 bg-black/50 z-50"
+        className="fixed inset-0 bg-black/50 z-[60]"
       />
 
       {/* Modal */}
       <motion.div
+        key="match-detail-modal"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="fixed inset-4 md:inset-8 lg:inset-16 bg-background border border-border rounded-lg z-50 overflow-hidden flex flex-col"
+        className="fixed inset-4 md:inset-8 lg:inset-16 bg-background border border-border rounded-lg z-[60] overflow-hidden flex flex-col"
       >
         {/* Header */}
         <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-background sticky top-0 z-10">
@@ -256,10 +258,19 @@ export function MatchDetailModal({ match, onClose, onPlayerClick, onChampionClic
                     {match.blue.totals.kills} kills · {formatGold(match.blue.totals.gold)}
                   </span>
                 </div>
+                <div className="flex items-center gap-3 pb-2 text-[10px] tracking-wider font-mono uppercase text-foreground-muted border-b border-border/40 mb-1">
+                  <div className="w-4 flex-shrink-0" />
+                  <div className="w-10 flex-shrink-0" />
+                  <div className="w-20 flex-shrink-0">Player</div>
+                  <div className="w-24 text-center">KDA</div>
+                  <div className="w-12 text-center">CS</div>
+                  <div className="w-14 text-center">Gold</div>
+                  <div className="w-10 text-center">VS</div>
+                </div>
                 <div className="divide-y divide-border">
                   {match.blue.players.map((player, index) => (
                     <motion.div
-                      key={player.playerId}
+                      key={player.playerId + '-' + index}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.15 + index * 0.05 }}
@@ -306,10 +317,19 @@ export function MatchDetailModal({ match, onClose, onPlayerClick, onChampionClic
                   </span>
                   <h3 className="font-serif text-lg font-bold text-foreground">{match.red.team}</h3>
                 </div>
+                <div className="flex items-center gap-3 pb-2 text-[10px] tracking-wider font-mono uppercase text-foreground-muted border-b border-border/40 mb-1 justify-end">
+                  <div className="w-10 text-center">VS</div>
+                  <div className="w-14 text-center">Gold</div>
+                  <div className="w-12 text-center">CS</div>
+                  <div className="w-24 text-center">KDA</div>
+                  <div className="w-20 text-right flex-shrink-0">Player</div>
+                  <div className="w-10 flex-shrink-0" />
+                  <div className="w-4 flex-shrink-0" />
+                </div>
                 <div className="divide-y divide-border">
                   {match.red.players.map((player, index) => (
                     <motion.div
-                      key={player.playerId}
+                      key={player.playerId + '-' + index}
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.15 + index * 0.05 }}
@@ -394,14 +414,14 @@ export function MatchDetailModal({ match, onClose, onPlayerClick, onChampionClic
           <div className="px-6 py-4 border-t border-border">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {match.blue.bans.map((champion) => (
-                  <BannedChampion key={champion.id} champion={champion} />
+                {match.blue.bans.map((champion, index) => (
+                  <BannedChampion key={'blue-ban-' + index} champion={champion} />
                 ))}
               </div>
               <span className="text-xs tracking-widest uppercase text-foreground-muted">Bans</span>
               <div className="flex items-center gap-2">
-                {match.red.bans.map((champion) => (
-                  <BannedChampion key={champion.id} champion={champion} />
+                {match.red.bans.map((champion, index) => (
+                  <BannedChampion key={'red-ban-' + index} champion={champion} />
                 ))}
               </div>
             </div>
@@ -444,6 +464,6 @@ export function MatchDetailModal({ match, onClose, onPlayerClick, onChampionClic
           </motion.div>
         </div>
       </motion.div>
-    </AnimatePresence>
+    </>
   )
 }
